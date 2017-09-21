@@ -7,7 +7,7 @@
 
 #define PIN_BUTTON   0
 #define PIN_LED     14
-#define NUM_LEDS    3
+#define NUM_LEDS    35
 
 const char* ssid = "Red_Mountain_Makers";
 const char* password = "luckyplanet397";
@@ -128,6 +128,10 @@ void on_status() {
   String html = "";
   html += "{\"brightness\":";
   html += brightness;
+  html += "{\"color\":";
+  html += scrollcolor;
+  html += "{\"pixel\":";
+//  html += val;
   html += "}";
   server.send(200, "text/html", html);
 }
@@ -156,21 +160,13 @@ void on_change_color() {
     brightness = server.arg("brightness").toInt();
     scrolltext = "";
   }
-  if (server.hasArg("scrolltext")) {
-    scrolltext = server.arg("scrolltext");
-    scrolltext = " " + scrolltext;
-    scrollindex = 0;
-    if (server.hasArg("wait")) {
-      scrollwait = server.arg("wait").toInt();
-      if (scrollwait < 5) scrollwait = 5;
-    }
     if (server.hasArg("color")) {
       scrollcolor = strtol(server.arg("color").c_str(), NULL, 16);
+      server.send(200, "text/html", "{\"result\":1}");
     }
   }
-  if (scrolltext.length() == 0){
-    show_leds();
-  server.send(200, "text/html", "{\"result\":1}");
-  }
-}
+//  if (scrolltext.length() == 0){
+//    show_leds();
+//  server.send(200, "text/html", "{\"result\":1}");
+//  }
 
